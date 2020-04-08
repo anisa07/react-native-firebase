@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, Image, StyleSheet, SafeAreaView} from 'react-native';
 import {Appbar, List} from 'react-native-paper';
-import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
+import {storageReference, databaseReference} from '../firebase/service';
 
 class Item extends React.Component {
   state = {
@@ -10,7 +9,7 @@ class Item extends React.Component {
   };
 
   async componentDidMount() {
-    const reference = storage().ref(this.props.url);
+    const reference = storageReference(this.props.url);
     const uri = await reference.getDownloadURL();
 
     this.setState({
@@ -44,7 +43,7 @@ class Item extends React.Component {
 }
 
 function HomeScreen() {
-  const ref = firestore().collection('goods');
+  const ref = databaseReference('goods');
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
 

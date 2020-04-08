@@ -4,44 +4,16 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
   Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth from '@react-native-firebase/auth';
-import {LoginManager, AccessToken} from 'react-native-fbsdk';
-
-async function onFacebookButtonPress() {
-  // Attempt login with permissions
-  const result = await LoginManager.logInWithPermissions([
-    'public_profile',
-    'email',
-  ]);
-
-  if (result.isCancelled) {
-    throw 'User cancelled the login process';
-  }
-
-  // Once signed in, get the users AccesToken
-  const data = await AccessToken.getCurrentAccessToken();
-
-  if (!data) {
-    throw 'Something went wrong obtaining access token';
-  }
-
-  // Create a Firebase credential with the AccessToken
-  const facebookCredential = auth.FacebookAuthProvider.credential(
-    data.accessToken,
-  );
-
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(facebookCredential);
-}
+import {onFacebookButtonPress, signIn, signUp} from '../firebase/service';
+import Input from '../components/Input';
+import CustomButton from '../components/CustomButton';
+import {attention, fontOnDark, button} from '../colors';
 
 function AuthScreen(props) {
   const [error, setError] = useState(undefined);
-  const [message, setMessage] = useState(undefined);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [mode, setMode] = useState('login');
@@ -50,45 +22,43 @@ function AuthScreen(props) {
     mode === 'login' ? setMode('signup') : setMode('login');
   };
 
+  const redirect = () => {
+    const {navigation} = props;
+
+    if (navigation.goBack) {
+      navigation.goBack();
+    } else {
+      navigation.navigate('Goods')
+    }
+  };
+
   const handleLogin = () => {
     setError(undefined);
 
-    const validate = text => {
-      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      if (reg.test(text) === false) {
-        return setError('Email is Not Correct');
-      }
-    };
-
-    validate(login);
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(login) === false) {
+      return setError('Email is Not Correct');
+    }
 
     if (password.length < 6) {
-      return setError('Password length less then 5');
+      return setError('Password length less then 6');
     }
 
     if (mode === 'login') {
-      auth()
-        .signInWithEmailAndPassword(login, password)
-        .then(() => {
-          props.navigation.goBack();
-        })
+      signIn(login, password)
         .catch(error => {
           if (error.code === 'auth/user-not-found') {
             return setError('Email is not registered yet!');
           }
 
-          if (error.code === 'auth/weak-password') {
-            return setError('Password should be st least 6 symbols!');
+          if (error.code === 'auth/wrong-password') {
+            return setError('Password or Email is not correct!');
           }
 
           setError(error.message);
         });
     } else {
-      auth()
-        .createUserWithEmailAndPassword(login, password)
-        .then(() => {
-          props.navigation.goBack();
-        })
+      signUp(login, password)
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
             return setError('That email address is already in use!');
@@ -98,6 +68,10 @@ function AuthScreen(props) {
             return setError('That email address is invalid!');
           }
 
+          if (error.code === 'auth/weak-password') {
+            return setError('Password is not correct!');
+          }
+
           setError(error.message);
         });
     }
@@ -105,9 +79,6 @@ function AuthScreen(props) {
 
   const handleFaceBookLogin = () => {
     onFacebookButtonPress()
-      .then(() => {
-        props.navigation.goBack();
-      })
       .catch(error => {
         setError(error);
       });
@@ -116,38 +87,25 @@ function AuthScreen(props) {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setLogin(text)}
-          value={login}
-        />
-        <Text style={styles.label}>Password</Text>
-        <TextInput
-          style={styles.input}
-          secureTextEntry={true}
-          onChangeText={text => setPassword(text)}
-          value={password}
-        />
+        <Input label="Email" changeText={setLogin} value={login} />
+        <Input label="Password" changeText={setPassword} value={password} pwd={true} />
         {error && <Text style={styles.error}>{error}</Text>}
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <CustomButton onPress={handleLogin} customStyle={styles.button} >
           <Text style={styles.buttonLabel}>
             {mode === 'signup' ? 'Sign Up' : 'Login'}
           </Text>
-        </TouchableOpacity>
+        </CustomButton>
         {Platform.OS === 'android' && (
           <>
             <Text style={styles.or}>Or</Text>
-            <TouchableOpacity
-              style={styles.facebook}
-              onPress={handleFaceBookLogin}>
+            <CustomButton onPress={handleFaceBookLogin} customStyle={styles.facebook} >
               <Ionicons
-                name="logo-facebook"
-                size={30}
-                style={{marginTop: -3}}
-                color="#fff"
+                  name="logo-facebook"
+                  size={30}
+                  style={{marginTop: -3}}
+                  color="#fff"
               />
-            </TouchableOpacity>
+            </CustomButton>
           </>
         )}
         <Text style={styles.modeText}>
@@ -155,11 +113,11 @@ function AuthScreen(props) {
             ? 'Not registered yet ? Switch to Sign Up'
             : 'Already registered? Switch to Login'}
         </Text>
-        <TouchableOpacity style={styles.switch} onPress={toggleMode}>
+        <CustomButton onPress={toggleMode} customStyle={styles.switch} >
           <Text style={styles.labelBlue}>
             Switch to {mode === 'login' ? 'Sign Up' : 'Login'}
           </Text>
-        </TouchableOpacity>
+        </CustomButton>
       </View>
     </SafeAreaView>
   );
@@ -177,35 +135,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 30,
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 15,
-  },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#e91e63',
-    padding: 10,
-    marginBottom: 15,
-    height: 40,
+    backgroundColor: attention,
   },
   buttonLabel: {
-    color: '#eee',
+    color: fontOnDark,
   },
   facebook: {
-    alignItems: 'center',
-    backgroundColor: '#3C5898',
-    padding: 10,
-    height: 40,
-    marginBottom: 15,
+    backgroundColor: button,
   },
   switch: {
-    alignItems: 'center',
     backgroundColor: 'transparent',
-    padding: 10,
-    height: 40,
-    marginBottom: 15,
   },
   error: {
     alignSelf: 'center',
@@ -218,7 +158,7 @@ const styles = StyleSheet.create({
   },
   labelBlue: {
     height: 30,
-    color: '#3C5898',
+    color: button,
   },
 });
 

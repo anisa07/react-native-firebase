@@ -8,94 +8,22 @@
 
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import auth from '@react-native-firebase/auth';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeScreen from './src/screens/Home';
-import ProfileScreen from './src/screens/Profile';
-import CartScreen from './src/screens/Cart';
-import AuthScreen from './src/screens/Auth';
-
-const Tab = createBottomTabNavigator();
-
-function TabBarIcon(props) {
-  return (
-    <Ionicons
-      name={props.name}
-      size={30}
-      style={{marginBottom: -3}}
-      color={props.focused ? '#e91e63' : '#ccc'}
-    />
-  );
-}
-
-function Tabs({user}) {
-  return (
-    <Tab.Navigator
-      initialRouteName="Goods"
-      tabBarOptions={{
-        activeTintColor: '#e91e63',
-      }}
-      screenProps={user}>
-      {!user && (
-        <Tab.Screen
-          name="Login"
-          component={AuthScreen}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <TabBarIcon focused={focused} name="ios-log-in" />
-            ),
-          }}
-        />
-      )}
-      {user && (
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <TabBarIcon focused={focused} name="ios-heart" />
-            ),
-          }}
-        />
-      )}
-      <Tab.Screen
-        name="Goods"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <TabBarIcon focused={focused} name="ios-list" />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Cart"
-        component={CartScreen}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <TabBarIcon focused={focused} name="ios-cart" />
-          ),
-        }}
-        initialParams={{user}}
-      />
-    </Tab.Navigator>
-  );
-}
+import Router from './src/components/Router';
+import {subscriberAuth} from './src/firebase/service';
 
 export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
-  useEffect(() => {
-    function onAuthStateChanged(user) {
-      setUser(user);
-      if (initializing) {
-        setInitializing(false);
-      }
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
     }
+  }
 
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+  useEffect(() => {
+    return subscriberAuth(onAuthStateChanged);
   }, [initializing]);
 
   if (initializing) {
@@ -104,96 +32,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Tabs user={user} />
+      <Router user={user} />
     </NavigationContainer>
   );
 }
-
-// const App: () => React$Node = () => {
-//   return (
-//     <>
-//       <StatusBar barStyle="dark-content" />
-//       <SafeAreaView>
-//         <ScrollView
-//           contentInsetAdjustmentBehavior="automatic"
-//           style={styles.scrollView}>
-//           <Header />
-//           {global.HermesInternal == null ? null : (
-//             <View style={styles.engine}>
-//               <Text style={styles.footer}>Engine: Hermes</Text>
-//             </View>
-//           )}
-//           <View style={styles.body}>
-//             <View style={styles.sectionContainer}>
-//               <Text style={styles.sectionTitle}>Step One</Text>
-//               <Text style={styles.sectionDescription}>
-//                 Edit <Text style={styles.highlight}>App.js</Text> to change this
-//                 screen and then come back to see your edits.
-//               </Text>
-//             </View>
-//             <View style={styles.sectionContainer}>
-//               <Text style={styles.sectionTitle}>See Your Changes</Text>
-//               <Text style={styles.sectionDescription}>
-//                 <ReloadInstructions />
-//               </Text>
-//             </View>
-//             <View style={styles.sectionContainer}>
-//               <Text style={styles.sectionTitle}>Debug</Text>
-//               <Text style={styles.sectionDescription}>
-//                 <DebugInstructions />
-//               </Text>
-//             </View>
-//             <View style={styles.sectionContainer}>
-//               <Text style={styles.sectionTitle}>Learn More</Text>
-//               <Text style={styles.sectionDescription}>
-//                 Read the docs to discover what to do next:
-//               </Text>
-//             </View>
-//             <LearnMoreLinks />
-//           </View>
-//         </ScrollView>
-//       </SafeAreaView>
-//     </>
-//   );
-// };
-//
-// const styles = StyleSheet.create({
-//   scrollView: {
-//     backgroundColor: Colors.lighter,
-//   },
-//   engine: {
-//     position: 'absolute',
-//     right: 0,
-//   },
-//   body: {
-//     backgroundColor: Colors.white,
-//   },
-//   sectionContainer: {
-//     marginTop: 32,
-//     paddingHorizontal: 24,
-//   },
-//   sectionTitle: {
-//     fontSize: 24,
-//     fontWeight: '600',
-//     color: Colors.black,
-//   },
-//   sectionDescription: {
-//     marginTop: 8,
-//     fontSize: 18,
-//     fontWeight: '400',
-//     color: Colors.dark,
-//   },
-//   highlight: {
-//     fontWeight: '700',
-//   },
-//   footer: {
-//     color: Colors.dark,
-//     fontSize: 12,
-//     fontWeight: '600',
-//     padding: 4,
-//     paddingRight: 12,
-//     textAlign: 'right',
-//   },
-// });
-//
-// export default App;
