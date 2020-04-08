@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1095745950926",
+    "firebase_url": "https://react-native-shop-430e8.firebaseio.com",
+    "project_id": "react-native-shop-430e8",
+    "storage_bucket": "react-native-shop-430e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095745950926:android:941216fc5e04d8d94aac9f",
+        "android_client_info": {
+          "package_name": "com.foodproject2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095745950926-qcorrflmr2ugg37enm7m5em8d0k0bh3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-CeSz_2Q2_3u56MyZkcoERaYSAbaohVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095745950926-qcorrflmr2ugg37enm7m5em8d0k0bh3f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095745950926-o8c40oc5uuralnfbc437usivhjq5gt6u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.FoodProject2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
