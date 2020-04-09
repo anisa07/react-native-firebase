@@ -152,14 +152,14 @@ android {
             keyPassword 'android'
         }
 
-        release {
-            if (project.hasProperty($BITRISEIO_ANDROID_KEYSTORE_URL)) {
-                storeFile file($BITRISEIO_ANDROID_KEYSTORE_URL)
-                storePassword $BITRISEIO_ANDROID_KEYSTORE_PASSWORD
-                keyAlias $BITRISEIO_ANDROID_KEYSTORE_ALIAS
-                keyPassword $BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
-            }
-        }
+//         release {
+//             if (project.hasProperty($BITRISEIO_ANDROID_KEYSTORE_URL)) {
+//                 storeFile file($BITRISEIO_ANDROID_KEYSTORE_URL)
+//                 storePassword $BITRISEIO_ANDROID_KEYSTORE_PASSWORD
+//                 keyAlias $BITRISEIO_ANDROID_KEYSTORE_ALIAS
+//                 keyPassword $BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD
+//             }
+//         }
     }
     buildTypes {
         debug {
