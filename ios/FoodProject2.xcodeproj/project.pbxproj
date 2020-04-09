@@ -20,6 +20,7 @@
 		A4C3AFF6A5CB4D8DB7FEEEF3 /* libPods-FoodProject2-FoodProject2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C012D51EFA489396A478A43 /* libPods-FoodProject2-FoodProject2Tests.a */; };
 		B5EFA291CF7E838CC1948545 /* libPods-FoodProject2-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A90A21A64EC93271CBDE970A /* libPods-FoodProject2-tvOSTests.a */; };
 		CC6DC17A243E4D9B006AF624 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC6DC179243E4D9B006AF624 /* GoogleService-Info.plist */; };
+		CCB9B539243FD586004F1E17 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = CCB9B538243FD586004F1E17 /* AppCenter-Config.plist */; };
 		EFD63AAF74099EC9AD653C10 /* libPods-FoodProject2-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C05337C46F08A77542F1730F /* libPods-FoodProject2-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		A90A21A64EC93271CBDE970A /* libPods-FoodProject2-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FoodProject2-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05337C46F08A77542F1730F /* libPods-FoodProject2-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FoodProject2-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC6DC179243E4D9B006AF624 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CCB9B538243FD586004F1E17 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		D437091DD4A780ECD116F973 /* Pods-FoodProject2-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodProject2-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-FoodProject2-tvOSTests/Pods-FoodProject2-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E0B6CD7DDEEEC49F14D1F35D /* libPods-FoodProject2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FoodProject2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -127,6 +129,7 @@
 		13B07FAE1A68108700A75B9A /* FoodProject2 */ = {
 			isa = PBXGroup;
 			children = (
+				CCB9B538243FD586004F1E17 /* AppCenter-Config.plist */,
 				CC6DC179243E4D9B006AF624 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				CCB9B539243FD586004F1E17 /* AppCenter-Config.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				CC6DC17A243E4D9B006AF624 /* GoogleService-Info.plist in Resources */,
 			);
