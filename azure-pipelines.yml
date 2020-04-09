@@ -38,10 +38,10 @@ steps:
   inputs:
     apkFiles: '**/*.apk'
     jarsign: true
-    jarsignerKeystoreFile: 'pathToYourKeystoreFile'
-    jarsignerKeystorePassword: '$(jarsignerKeystorePassword)'
-    jarsignerKeystoreAlias: 'yourKeystoreAlias'
-    jarsignerKeyPassword: '$(jarsignerKeyPassword)'
+    jarsignerKeystoreFile: my_keystore.jks
+    jarsignerKeystorePassword: '$(BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD)'
+    jarsignerKeystoreAlias: 'BITRISEIO_ANDROID_KEYSTORE_ALIAS'
+    jarsignerKeyPassword: '$(BITRISEIO_ANDROID_KEYSTORE_PASSWORD)'
     zipalign: true
 
 - script: |
