@@ -152,12 +152,12 @@ android {
             keyPassword 'android'
         }
 
-        release {
-           storeFile file(System.getenv("HOME") + "/keystores/my_keystore.jks")
-           storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-           keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
-           keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-        }
+//         release {
+//            storeFile file(System.getenv("HOME") + "/keystores/my_keystore.jks")
+//            storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
+//            keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+//            keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+//         }
     }
     buildTypes {
         debug {
