@@ -34,7 +34,17 @@ steps:
 - script: npm run test
   displayName: 'Run unit tests'
 
+- task: AndroidSigning@2
+  inputs:
+    apkFiles: '**/*.apk'
+    jarsign: true
+    jarsignerKeystoreFile: 'pathToYourKeystoreFile'
+    jarsignerKeystorePassword: '$(jarsignerKeystorePassword)'
+    jarsignerKeystoreAlias: 'yourKeystoreAlias'
+    jarsignerKeyPassword: '$(jarsignerKeyPassword)'
+    zipalign: true
+
 - script: |
     cd android
     ./gradlew bundleRelease
-  displayName: 'Build android'  
+  displayName: 'Build android'
