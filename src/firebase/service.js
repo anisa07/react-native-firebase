@@ -1,5 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import storage from '@react-native-firebase/storage';
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
 
@@ -38,7 +39,48 @@ export async function onFacebookButtonPress() {
     return auth().signInWithCredential(facebookCredential);
 }
 
+export const addUserInfoDoDb = async (user) => {
+    if (user.uid && user.providerData && user.providerData[0]) {
+        const token = await messaging().getToken();
+        await firestore().collection("users").doc(user.uid).set({
+            ...user.providerData[0],
+            ...{tokens: firestore.FieldValue.arrayUnion(token)}
+        });
+    }
+};
+
 export const storageReference = (url) => storage().ref(url);
 
 export const databaseReference = (collection) => firestore().collection(collection);
 
+export async function registerAppWithFCM() {
+    await messaging().registerDeviceForRemoteMessages();
+    await requestUserPermission();
+}
+
+export async function requestUserPermission() {
+    await messaging().requestPermission();
+}
+
+export async function saveTokenToDatabase(token, user) {
+    await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .update({
+            tokens: firestore.FieldValue.arrayUnion(token),
+        });
+}
+
+// export async function getDeviceToken(user) {
+//     await messaging()
+//         .getToken()
+//         .then(token => {
+//             return saveTokenToDatabase(token, user);
+//         });
+// }
+
+export async function listenTokenChange(user) {
+    await messaging().onTokenRefresh(token => {
+        saveTokenToDatabase(token, user);
+    })
+}
